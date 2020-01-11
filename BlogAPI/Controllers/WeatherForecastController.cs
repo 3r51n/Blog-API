@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace BlogAPI.Controllers
+namespace Blog.API.Core.Controllers
 {
     [ApiController]
     [Route("[controller]")]

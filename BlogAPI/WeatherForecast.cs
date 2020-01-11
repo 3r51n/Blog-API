@@ -1,6 +1,6 @@
 using System;
 
-namespace BlogAPI
+namespace Blog.API.Core
 {
     public class WeatherForecast
     {
