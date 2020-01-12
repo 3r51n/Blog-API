@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Blog.Model
 {
-    public class SocialPlatforms:Entity
+    public class SocialPlatform:Entity
     {
         [ForeignKey("Author")]
         public virtual Guid AuthorKey { get; set; }

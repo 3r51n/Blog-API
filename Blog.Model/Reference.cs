@@ -10,6 +10,7 @@ namespace Blog.Model
         public virtual Author Author { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
+        public virtual string GSM { get; set; }
         public virtual string Position { get; set; }
         public virtual string ImageUrl { get; set; }
         public virtual string AccountUrl { get; set; }

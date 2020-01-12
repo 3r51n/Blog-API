@@ -11,5 +11,6 @@ namespace Blog.Model
         public Guid Key { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime LastUpdateDate { get; set; }
+        public bool Active { get; set; }
     }
 }

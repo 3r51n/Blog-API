@@ -2,9 +2,9 @@
 {
     public class Message:Entity
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Topic { get; set; }
-        public string Content { get; set; }
+        public virtual string Name { get; set; }
+        public virtual string Email { get; set; }
+        public virtual string Topic { get; set; }
+        public virtual string Content { get; set; }
     }
 }
