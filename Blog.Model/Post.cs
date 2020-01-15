@@ -5,7 +5,7 @@ using Blog.Model.Enums;
 
 namespace Blog.Model
 {
-    public class Post
+    public class Post:Entity
     {
         public byte GaleryIndex { get; set; } = 0;
         public string PrimaryImage { get; set; }

@@ -3,17 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.API.Core", "BlogAPI\Blog.API.Core.csproj", "{83CCCB78-85EB-4D0A-B0F0-EA164F996A1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.API.Core", "BlogAPI\Blog.API.Core.csproj", "{83CCCB78-85EB-4D0A-B0F0-EA164F996A1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Model", "Blog.Model\Blog.Model.csproj", "{EEF077D1-F650-45D7-8C28-92688B9CC7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Model", "Blog.Model\Blog.Model.csproj", "{EEF077D1-F650-45D7-8C28-92688B9CC7D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.DataManager", "Blog.DataManager\Blog.DataManager.csproj", "{5D9C7D8F-421A-4A30-A530-E36AD5A84AB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.DataManager", "Blog.DataManager\Blog.DataManager.csproj", "{5D9C7D8F-421A-4A30-A530-E36AD5A84AB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Manager", "Blog.Manager\Blog.Manager.csproj", "{EDF8D5C8-8A55-472A-B04D-485B04493394}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Service", "Blog.Service\Blog.Service.csproj", "{3BA43E4D-C645-4E53-937C-4215D205662F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Service", "Blog.Service\Blog.Service.csproj", "{3BA43E4D-C645-4E53-937C-4215D205662F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Common", "Blog.Common\Blog.Common.csproj", "{C06CBA81-D04C-4EEA-9B04-F40C59C7D099}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Common", "Blog.Common\Blog.Common.csproj", "{C06CBA81-D04C-4EEA-9B04-F40C59C7D099}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{77814D67-90F5-40EC-9AC2-222FF97C1C30}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityManager.Test", "EntityManager.Test\EntityManager.Test.csproj", "{F12D494C-4479-41C4-B865-C7C1C376072C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +35,6 @@ Global
 		{5D9C7D8F-421A-4A30-A530-E36AD5A84AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9C7D8F-421A-4A30-A530-E36AD5A84AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9C7D8F-421A-4A30-A530-E36AD5A84AB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDF8D5C8-8A55-472A-B04D-485B04493394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDF8D5C8-8A55-472A-B04D-485B04493394}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDF8D5C8-8A55-472A-B04D-485B04493394}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDF8D5C8-8A55-472A-B04D-485B04493394}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3BA43E4D-C645-4E53-937C-4215D205662F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3BA43E4D-C645-4E53-937C-4215D205662F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BA43E4D-C645-4E53-937C-4215D205662F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,9 +43,16 @@ Global
 		{C06CBA81-D04C-4EEA-9B04-F40C59C7D099}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C06CBA81-D04C-4EEA-9B04-F40C59C7D099}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C06CBA81-D04C-4EEA-9B04-F40C59C7D099}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F12D494C-4479-41C4-B865-C7C1C376072C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F12D494C-4479-41C4-B865-C7C1C376072C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F12D494C-4479-41C4-B865-C7C1C376072C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F12D494C-4479-41C4-B865-C7C1C376072C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F12D494C-4479-41C4-B865-C7C1C376072C} = {77814D67-90F5-40EC-9AC2-222FF97C1C30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {76EBBF7E-3A22-46B6-AC79-1F42A8D459C8}
