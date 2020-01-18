@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using Blog.Model;
 using Blog.Model.ApiResponseModels;
@@ -29,13 +31,16 @@ namespace Blog.API.Core.Controllers
         public SingleDataResponseModel<CardInfoDataTransferModel> GetCardInfoDataByAuthor(string author)
         {
             var apiResponse = new SingleDataResponseModel<CardInfoDataTransferModel>();
+            apiResponse.LanguageCode = "tr-TR";
             apiResponse.Validation = new ValidationResponseModel();
             apiResponse.RequestIdentifier = _contextAccessor.HttpContext.TraceIdentifier;
             try
             {
-                 
-                
+                //TODO: Exception handling
                 apiResponse.Data = _aboutService.GetCardInfoDataByAuthor(author) as CardInfoDataTransferModel;
+                apiResponse.HttpStatusCode = HttpStatusCode.OK;
+                apiResponse.ResultType = ResultTypes.Success;
+                apiResponse.Message = "Kart bilgileri alındı";
             }
             catch (Exception exception)
             {
@@ -55,74 +60,40 @@ namespace Blog.API.Core.Controllers
             }
             return apiResponse;
         }
-        /*
-         * var apiResponseModel = new MMSResponseModel();
-            apiResponseModel.Validations = new Validations();
-            apiResponseModel.DataModel = null;
-            apiResponseModel.RequestIdentifier = _config.RequestIdentifier;
+
+        [AllowAnonymous]
+        [Route("{author}/xp")]
+        [HttpGet]
+        public CollectionDataResponseModel<ExperienceDataTransferModel> GetExperienceByAuthor(string author)
+        {
+            var apiResponse = new CollectionDataResponseModel<ExperienceDataTransferModel>();
+            apiResponse.LanguageCode = "tr-TR";
+            apiResponse.Validation = new ValidationResponseModel();
+            apiResponse.RequestIdentifier = _contextAccessor.HttpContext.TraceIdentifier;
             try
             {
-                #region [ ApiResponseModel]
-                apiResponseModel.HttpStatusCode = HttpStatusCode.OK;
-                apiResponseModel.ResultType = ResultType.Success;
-                apiResponseModel.LanguageCode = GlobalDefinitions.MMS_DEFAULT_LANGUAGE_CODE;
-                #endregion
-
-                #region [SERVICE OPERATIONS]
-                var languageList = _languageService.GetAllActiveLanguage();
-                var responseModel = new CollectionResponseModel<LanguageDataTransferModel>()
+                //TODO: Exception handling
+                var dataList = _aboutService.GetExperiencesByAuthor(author) as IEnumerable<ExperienceDataTransferModel>;
+                apiResponse.Data = dataList;
+                apiResponse.Pagination = new Pagination
                 {
-                    Data = new List<LanguageDataTransferModel>(),
-                    Pagination = new Pagination()
-                    {
-                        Limit = limit,
-                        Offset = offset,
-                        TotalCount = languageList.Count()
-                    }
+                    Limit = dataList.Count(),
+                    Offset = 0,
+                    Returned = dataList.Count(),
+                    TotalCount = dataList.Count()
                 };
 
-                //------------------------------
-                if (offset != default(int) && limit != default(int))
-                {
-                    var languages = languageList.Skip(offset).Take(limit);
-                    // validation
-                    CheckEntityList(_config,_repositoryManager, languages, "anonymous");
-                    responseModel.Data = languages.Select(ModelBinder.LanguageToLanguageDataTransferModel).ToList();
-                }
-
-                else if (limit == default(int))
-                {
-                    var languages = languageList.Skip(offset);
-                    // validation
-                    CheckEntityList(_config,_repositoryManager, languages, "anonymous");
-                    responseModel.Data = languages.Select(ModelBinder.LanguageToLanguageDataTransferModel).ToList();
-                    responseModel.Pagination.Limit = responseModel.Data.Count;
-                }
-
-                responseModel.Pagination.Returned = responseModel.Data.Count;
-                #endregion
-
-                apiResponseModel.DataModel = responseModel;
-
-                apiResponseModel.Message = new TranslationCode
-                {
-                    LanguageCode = _config.ActiveLanguageCode,
-                    TextCode = TranslateCode.LANGUAGE_SUCCESS_1, // Diller başarılı bir şekilde alındı.
-
-                }.Translate();
+                apiResponse.HttpStatusCode = HttpStatusCode.OK;
+                apiResponse.ResultType = ResultTypes.Success;
+                apiResponse.Message = "İş/Deneyim bilgileri alındı";
             }
             catch (Exception exception)
             {
-                apiResponseModel.HttpStatusCode = HttpStatusCode.InternalServerError;
-                apiResponseModel.ResultType = ResultType.Fail;
-                apiResponseModel.Message = new TranslationCode
-                {
-                    LanguageCode = _config.ActiveLanguageCode,
-                    TextCode = TranslateCode.LANGUAGE_FAIL_1, // Diller başarılı bir şekilde alınamadı.
+                apiResponse.HttpStatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.ResultType = ResultTypes.Fail;
+                apiResponse.Message = "İş/Deneyim bilgileri hazırlanırken hata oluştu";
 
-                }.Translate();
-
-                apiResponseModel.ExceptionModel = new ExceptionModel()
+                apiResponse.Exception = new ExceptionResponseModel()
                 {
                     Message = exception.Message,
                     TypeName = exception.GetType().FullName
@@ -130,9 +101,189 @@ namespace Blog.API.Core.Controllers
             }
             finally
             {
-                _contextAccessor.HttpContext.Response.StatusCode = (int)apiResponseModel.HttpStatusCode;
+                _contextAccessor.HttpContext.Response.StatusCode = (int)apiResponse.HttpStatusCode;
             }
-            return apiResponseModel;
-         */
+            return apiResponse;
+        }
+
+        [AllowAnonymous]
+        [Route("{author}/education")]
+        [HttpGet]
+        public CollectionDataResponseModel<EducationDataTransferModel> GetEducationByAuthor(string author)
+        {
+            var apiResponse = new CollectionDataResponseModel<EducationDataTransferModel>();
+            apiResponse.LanguageCode = "tr-TR";
+            apiResponse.Validation = new ValidationResponseModel();
+            apiResponse.RequestIdentifier = _contextAccessor.HttpContext.TraceIdentifier;
+            try
+            {
+                //TODO: Exception handling
+                var dataList = _aboutService.GetEducationsByAuthor(author) as IEnumerable<EducationDataTransferModel>;
+                apiResponse.Data = dataList;
+                apiResponse.Pagination = new Pagination
+                {
+                    Limit = dataList.Count(),
+                    Offset = 0,
+                    Returned = dataList.Count(),
+                    TotalCount = dataList.Count()
+                };
+
+                apiResponse.HttpStatusCode = HttpStatusCode.OK;
+                apiResponse.ResultType = ResultTypes.Success;
+                apiResponse.Message = "Eğitim bilgileri alındı";
+            }
+            catch (Exception exception)
+            {
+                apiResponse.HttpStatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.ResultType = ResultTypes.Fail;
+                apiResponse.Message = "Eğitim bilgileri hazırlanırken hata oluştu";
+
+                apiResponse.Exception = new ExceptionResponseModel()
+                {
+                    Message = exception.Message,
+                    TypeName = exception.GetType().FullName
+                };
+            }
+            finally
+            {
+                _contextAccessor.HttpContext.Response.StatusCode = (int)apiResponse.HttpStatusCode;
+            }
+            return apiResponse;
+        }
+
+        [AllowAnonymous]
+        [Route("{author}/interest")]
+        [HttpGet]
+        public CollectionDataResponseModel<InterestDataTransferModel> GetInterestsByAuthor(string author)
+        {
+            var apiResponse = new CollectionDataResponseModel<InterestDataTransferModel>();
+            apiResponse.LanguageCode = "tr-TR";
+            apiResponse.Validation = new ValidationResponseModel();
+            apiResponse.RequestIdentifier = _contextAccessor.HttpContext.TraceIdentifier;
+            try
+            {
+                //TODO: Exception handling
+                var dataList = _aboutService.GetAbilityAndInterestsByAuthor(author) as IEnumerable<InterestDataTransferModel>;
+                apiResponse.Data = dataList;
+                apiResponse.Pagination = new Pagination
+                {
+                    Limit = dataList.Count(),
+                    Offset = 0,
+                    Returned = dataList.Count(),
+                    TotalCount = dataList.Count()
+                };
+
+                apiResponse.HttpStatusCode = HttpStatusCode.OK;
+                apiResponse.ResultType = ResultTypes.Success;
+                apiResponse.Message = "Yetenek ve ilgi bilgileri alındı";
+            }
+            catch (Exception exception)
+            {
+                apiResponse.HttpStatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.ResultType = ResultTypes.Fail;
+                apiResponse.Message = "Yetenek ve ilgi bilgileri hazırlanırken hata oluştu";
+
+                apiResponse.Exception = new ExceptionResponseModel()
+                {
+                    Message = exception.Message,
+                    TypeName = exception.GetType().FullName
+                };
+            }
+            finally
+            {
+                _contextAccessor.HttpContext.Response.StatusCode = (int)apiResponse.HttpStatusCode;
+            }
+            return apiResponse;
+        }
+
+        [AllowAnonymous]
+        [Route("{author}/success")]
+        [HttpGet]
+        public CollectionDataResponseModel<SuccessDateTransferModel> GetSuccessesByAuthor(string author)
+        {
+            var apiResponse = new CollectionDataResponseModel<SuccessDateTransferModel>();
+            apiResponse.LanguageCode = "tr-TR";
+            apiResponse.Validation = new ValidationResponseModel();
+            apiResponse.RequestIdentifier = _contextAccessor.HttpContext.TraceIdentifier;
+            try
+            {
+                //TODO: Exception handling
+                var dataList = _aboutService.GetSuccessesByAuthor(author) as IEnumerable<SuccessDateTransferModel>;
+                apiResponse.Data = dataList;
+                apiResponse.Pagination = new Pagination
+                {
+                    Limit = dataList.Count(),
+                    Offset = 0,
+                    Returned = dataList.Count(),
+                    TotalCount = dataList.Count()
+                };
+
+                apiResponse.HttpStatusCode = HttpStatusCode.OK;
+                apiResponse.ResultType = ResultTypes.Success;
+                apiResponse.Message = "Başarı bilgileri alındı";
+            }
+            catch (Exception exception)
+            {
+                apiResponse.HttpStatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.ResultType = ResultTypes.Fail;
+                apiResponse.Message = "Başarı bilgileri hazırlanırken hata oluştu";
+
+                apiResponse.Exception = new ExceptionResponseModel()
+                {
+                    Message = exception.Message,
+                    TypeName = exception.GetType().FullName
+                };
+            }
+            finally
+            {
+                _contextAccessor.HttpContext.Response.StatusCode = (int)apiResponse.HttpStatusCode;
+            }
+            return apiResponse;
+        }
+
+        [AllowAnonymous]
+        [Route("{author}/reference")]
+        [HttpGet]
+        public CollectionDataResponseModel<ReferenceDataTransferModel> GetReferencesByAuthor(string author)
+        {
+            var apiResponse = new CollectionDataResponseModel<ReferenceDataTransferModel>();
+            apiResponse.LanguageCode = "tr-TR";
+            apiResponse.Validation = new ValidationResponseModel();
+            apiResponse.RequestIdentifier = _contextAccessor.HttpContext.TraceIdentifier;
+            try
+            {
+                //TODO: Exception handling
+                var dataList = _aboutService.GetReferencesByAuthor(author) as IEnumerable<ReferenceDataTransferModel>;
+                apiResponse.Data = dataList;
+                apiResponse.Pagination = new Pagination
+                {
+                    Limit = dataList.Count(),
+                    Offset = 0,
+                    Returned = dataList.Count(),
+                    TotalCount = dataList.Count()
+                };
+
+                apiResponse.HttpStatusCode = HttpStatusCode.OK;
+                apiResponse.ResultType = ResultTypes.Success;
+                apiResponse.Message = "Referans bilgileri alındı";
+            }
+            catch (Exception exception)
+            {
+                apiResponse.HttpStatusCode = HttpStatusCode.InternalServerError;
+                apiResponse.ResultType = ResultTypes.Fail;
+                apiResponse.Message = "Referans bilgileri hazırlanırken hata oluştu";
+
+                apiResponse.Exception = new ExceptionResponseModel()
+                {
+                    Message = exception.Message,
+                    TypeName = exception.GetType().FullName
+                };
+            }
+            finally
+            {
+                _contextAccessor.HttpContext.Response.StatusCode = (int)apiResponse.HttpStatusCode;
+            }
+            return apiResponse;
+        }
     }
 }

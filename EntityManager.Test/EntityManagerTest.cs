@@ -29,11 +29,9 @@ namespace EntityManager.Test
             };
 
             // Act
-            var insertTask = _em.AddItemAsync(item);
-            insertTask.Wait();
-            var inserted = insertTask.Result;
+            var inserted = _em.AddItem(item);
             // Assert
-            Assert.NotNull(insertTask);
+            Assert.NotNull(inserted);
             Assert.NotEqual(default(Guid), inserted.Key);
         }
 
@@ -62,15 +60,14 @@ namespace EntityManager.Test
 
             };
             // Act
-            var insertTask = _em.AddItemAsync(item1);
-            var insertTask2 = _em.AddItemAsync(item2);
+            var insert1 = _em.AddItem(item1);
+            var insert2 = _em.AddItem(item2);
 
-            var listTask = _em.GetAllItemListAsync<Category>();
-            listTask.Wait();
-            var resultCount = listTask.Result.Count();
+            var list = _em.GetAllItemList<Category>();
+            var resultCount = list.Count();
             // Assert
-            Assert.NotNull(insertTask.Result);
-            Assert.NotNull(insertTask2.Result);
+            Assert.NotNull(insert1);
+            Assert.NotNull(insert2);
             Assert.Equal(2, resultCount);
         }
 
@@ -89,13 +86,9 @@ namespace EntityManager.Test
 
             };
             // Act
-            var insertTask = _em.AddItemAsync(item);
-            insertTask.Wait();
-            var inserted = insertTask.Result;
+            var inserted = _em.AddItem(item);
 
-            var getByKey = _em.GetItemByKeyAsync<Category>(inserted.Key);
-            getByKey.Wait();
-            var getItem = getByKey.Result;
+            var getItem = _em.GetItemByKey<Category>(inserted.Key);
             // Assert
             Assert.Equal(inserted, getItem);
         }
@@ -116,21 +109,16 @@ namespace EntityManager.Test
 
             };
             // Act
-            var insertTask = _em.AddItemAsync(item);
-            insertTask.Wait();
-            var key = insertTask.Result.Key;
+            var inserted = _em.AddItem(item);
 
-            var getItem = _em.GetItemByKeyAsync<Category>(key);
-            getItem.Wait();
-            getItem.Result.Name = itemName;
-            var updateTask = _em.UpdateItemAsync(getItem.Result);
-            updateTask.Wait();
+            var getItem = _em.GetItemByKey<Category>(inserted.Key);
+            getItem.Name = itemName;
+            _em.UpdateItem(getItem);
 
-            getItem = _em.GetItemByKeyAsync<Category>(key);
-            getItem.Wait();
+            getItem = _em.GetItemByKey<Category>(inserted.Key);
             // Assert
-            Assert.NotEqual(initialName, getItem.Result.Name);
-            Assert.Equal(itemName, getItem.Result.Name);
+            Assert.NotEqual(initialName, getItem.Name);
+            Assert.Equal(itemName, getItem.Name);
         }
 
         [Fact]
@@ -148,19 +136,15 @@ namespace EntityManager.Test
 
             };
             // Act
-            var insertTask = _em.AddItemAsync(item);
-            insertTask.Wait();
-            var key = insertTask.Result.Key;
+            var inserted = _em.AddItem(item);
 
-            var getItem = _em.GetItemByKeyAsync<Category>(key);
-            getItem.Wait();
+            var getItem = _em.GetItemByKey<Category>(inserted.Key);
+            _em.DeleteItem(getItem);
 
-            _em.DeleteItem(getItem.Result);
-
-            getItem = _em.GetItemByKeyAsync<Category>(key);
-            getItem.Wait();
+            getItem = _em.GetItemByKey<Category>(inserted.Key);
+            
             // Assert
-            Assert.Null(getItem.Result);
+            Assert.Null(getItem);
         }
     }
 }

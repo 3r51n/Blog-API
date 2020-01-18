@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Blog.Model;
 
 namespace Blog.DataManager
@@ -16,27 +15,22 @@ namespace Blog.DataManager
         }
         #endregion
 
-        public Task<IEnumerable<TEntity>> GetAllItemListAsync<TEntity>() where TEntity : class, IEntity, new()
+        public IEnumerable<TEntity> GetAllItemList<TEntity>() where TEntity : class, IEntity, new()
         {
             return _repository.GetList<TEntity>(x => x.Active);
         }
 
-        //public Task<IEnumerable<TEntity>> FilterAsync<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new()
-        //{
-        //    return _repository.GetList(predicate);
-        //}
-
-        public Task<TEntity> GetItemByKeyAsync<TEntity>(Guid key) where TEntity : class, IEntity, new()
+        public TEntity GetItemByKey<TEntity>(Guid key) where TEntity : class, IEntity, new()
         {
             return _repository.GetByKey<TEntity>(key);
         }
 
-        public Task<TEntity> AddItemAsync<TEntity>(TEntity item) where TEntity : class, IEntity, new()
+        public TEntity AddItem<TEntity>(TEntity item) where TEntity : class, IEntity, new()
         {
             return _repository.Add(item);
         }
 
-        public Task<TEntity> UpdateItemAsync<TEntity>(TEntity item) where TEntity : class, IEntity, new()
+        public TEntity UpdateItem<TEntity>(TEntity item) where TEntity : class, IEntity, new()
         {
             return _repository.Update(item);
         }

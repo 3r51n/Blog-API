@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Blog.DataManager.EFCore.Context;
 using Blog.Model;
 using Microsoft.EntityFrameworkCore;
@@ -21,55 +20,51 @@ namespace Blog.DataManager.EFCore
         #endregion
 
         #region [ Get ]
-        public async Task<TEntity> Get<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new()
+        public TEntity Get<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new()
         {
-            var list = await _context.Set<TEntity>().ToListAsync();
-            var returnList = list.ToList().SingleOrDefault(predicate);
-            return returnList;
+            return _context.Set<TEntity>().SingleOrDefault(predicate);
         }
         #endregion
 
         #region [ GetByKey ]
-        public async Task<TEntity> GetByKey<TEntity>(Guid Key) where TEntity : class, IEntity, new()
+        public TEntity GetByKey<TEntity>(Guid Key) where TEntity : class, IEntity, new()
         {
-            var item = (TEntity)await _context.FindAsync(typeof(TEntity), Key);
+            var item = (TEntity) _context.Find(typeof(TEntity), Key);
             return item;
         }
         #endregion
 
         #region [ GetList ]
-        public async Task<IEnumerable<TEntity>> GetList<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new()
+        public IEnumerable<TEntity> GetList<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new()
         {
-            var list = await _context.Set<TEntity>().ToListAsync();
-            var returnList = list.ToList().Where(predicate);
-            return returnList;
+            return _context.Set<TEntity>().Where(predicate);
         }
         #endregion
 
         #region [ Add ]
-        public async Task<TEntity> Add<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
+        public TEntity Add<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
         {
-            await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            _context.Add(entity);
+            _context.SaveChanges();
 
             return entity;
         }
         #endregion
 
         #region [ Update ]
-        public async Task<TEntity> Update<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
+        public TEntity Update<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
         {
             _context.Update(entity);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return entity;
         }
         #endregion
 
         #region [ Delete ]
-        public async void Delete<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
+        public void Delete<TEntity>(TEntity entity) where TEntity : class, IEntity, new()
         {
             _context.Remove(entity);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
         #endregion
     }

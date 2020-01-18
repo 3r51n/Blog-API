@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Blog.Model;
 
 namespace Blog.DataManager
@@ -13,7 +12,7 @@ namespace Blog.DataManager
         /// <typeparam name="TEntity">Entity Type</typeparam>
         /// <param name="predicate">predicate - filter</param>
         /// <returns>item</returns>
-        Task<TEntity> Get<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new();
+        TEntity Get<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new();
 
         /// <summary>
         /// Get single item by key
@@ -21,7 +20,7 @@ namespace Blog.DataManager
         /// <typeparam name="TEntity">Entity Type</typeparam>
         /// <param name="Key">predicate - filter</param>
         /// <returns>item</returns>
-        Task<TEntity> GetByKey<TEntity>(Guid Key) where TEntity : class, IEntity, new();
+        TEntity GetByKey<TEntity>(Guid Key) where TEntity : class, IEntity, new();
 
         /// <summary>
         /// Get item list by predicate
@@ -29,7 +28,7 @@ namespace Blog.DataManager
         /// <typeparam name="TEntity">Entity Type</typeparam>
         /// <param name="predicate">predicate - filter</param>
         /// <returns>item list</returns>
-        Task<IEnumerable<TEntity>> GetList<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new();
+        IEnumerable<TEntity> GetList<TEntity>(Func<TEntity, bool> predicate) where TEntity : class, IEntity, new();
 
         /// <summary>
         /// Insert item
@@ -37,7 +36,7 @@ namespace Blog.DataManager
         /// <typeparam name="TEntity">Entity Type</typeparam>
         /// <param name="entity">new item</param>
         /// <returns>Inserted Item</returns>
-        Task<TEntity> Add<TEntity>(TEntity entity) where TEntity : class, IEntity, new();
+        TEntity Add<TEntity>(TEntity entity) where TEntity : class, IEntity, new();
 
         /// <summary>
         /// Update item
@@ -45,7 +44,7 @@ namespace Blog.DataManager
         /// <typeparam name="TEntity">Entity Type</typeparam>
         /// <param name="entity">update item</param>
         /// <returns>Updated Item</returns>
-        Task<TEntity> Update<TEntity>(TEntity entity) where TEntity : class, IEntity, new();
+        TEntity Update<TEntity>(TEntity entity) where TEntity : class, IEntity, new();
 
         /// <summary>
         /// Delete item

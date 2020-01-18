@@ -1,6 +1,7 @@
 ﻿using System;
 using Blog.Common;
 using Blog.Model;
+using Blog.Model.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -62,6 +63,7 @@ namespace Blog.DataManager.EFCore.Context
                 .Entity<Author>()
                 .HasData(_author);
 
+            #region [ Social Platforms ]
             var _google = new SocialPlatform()
             {
                 AuthorKey = _author.Key,
@@ -144,12 +146,287 @@ namespace Blog.DataManager.EFCore.Context
                 LastUpdateDate = DateTime.UtcNow,
                 AccountUrl = "https://github.com/slyn",
                 Logo = "data:image/png;base64,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"
-            };
-
+            }; 
+            #endregion
             modelBuilder
                 .Entity<SocialPlatform>()
                 .HasData(_github,_twitter,_google,_medium,_linkedin,_facebook,_instagram);
 
+            #region [ Companies ]
+
+            var _comp1 = new Company
+            {
+                Key = Guid.NewGuid(),
+                Name = "Bereket Enerji Üretim A.Ş.",
+                Location = "Denizli/Türkiye",
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                LogoUrl = "https://via.placeholder.com/250"
+            };
+            var _comp2 = new Company
+            {
+                Key = Guid.NewGuid(),
+                Name = "Netinternet",
+                Location = "Denizli/Türkiye",
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                LogoUrl = "https://via.placeholder.com/250"
+            };
+            #endregion
+            modelBuilder
+                .Entity<Company>()
+                .HasData(_comp1, _comp2);
+
+            #region [ Experiences ]
+            var _xp1 = new Experience
+            {
+                AuthorKey = _author.Key,
+                Active = true,
+                Key = Guid.NewGuid(),
+                CompanyKey = _comp2.Key,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Begin = DateTime.UtcNow,
+                Position = "Stajyer",
+                End = DateTime.UtcNow
+            };
+            var _xp2 = new Experience
+            {
+                AuthorKey = _author.Key,
+                Active = true,
+                Key = Guid.NewGuid(),
+                CompanyKey = _comp2.Key,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Begin = DateTime.UtcNow,
+                Position = "Stajyer",
+                End = DateTime.UtcNow
+            };
+            var _xp3 = new Experience
+            {
+                AuthorKey = _author.Key,
+                Active = true,
+                Key = Guid.NewGuid(),
+                CompanyKey = _comp1.Key,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Begin = DateTime.UtcNow,
+                Position = "Yazılım Geliştirme Uzm.Yrd.",
+                End = DateTime.UtcNow
+            };
+            #endregion
+            modelBuilder
+                .Entity<Experience>()
+                .HasData(_xp1,_xp2,_xp3);
+
+            #region [ Universities ]
+            var _uni1 = new University
+            {
+                Key = Guid.NewGuid(),
+                Name = "Pamukkale Universitesi",
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Location = "Denizli/Türkiye",
+                LogoUrl = "https://via.placeholder.com/250"
+            };
+            var _uni2 = new University
+            {
+                Key = Guid.NewGuid(),
+                Name = "Silesian University of Technology",
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Location = "Gliwice/POLAND",
+                LogoUrl = "https://via.placeholder.com/250"
+            };
+            #endregion
+            modelBuilder
+                .Entity<University>()
+                .HasData(_uni1,_uni2);
+
+            #region [ Educations ]
+
+            var _edu1 = new Education
+            {
+                Active = true,
+                Key = Guid.NewGuid(),
+                AuthorKey = _author.Key,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                UniversityKey = _uni1.Key,
+                Begin = DateTime.UtcNow,
+                End = DateTime.UtcNow,
+                Department = "Mühendislik Fakültesi",
+                Branch = "Bilgisayar Mühendisliği",
+                Detail = "",
+                Score = (float)3.46
+            };
+            var _edu2 = new Education
+            {
+                Active = true,
+                Key = Guid.NewGuid(),
+                AuthorKey = _author.Key,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                UniversityKey = _uni1.Key,
+                Begin = DateTime.UtcNow,
+                End = DateTime.UtcNow,
+                Department = "Faculty of Automatic Control, Electronics and Computer Science",
+                Branch = "Computer Science",
+                Detail = "Erasmus+",
+                Score = null
+            };
+            #endregion
+            modelBuilder
+                .Entity<Education>()
+                .HasData(_edu1, _edu2);
+
+            #region [ Ability & Interest ]
+
+            var _interest1 = new Interest
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Name = "C#"
+            };
+            var _interest2 = new Interest
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Name = "Python"
+            };
+            var _interest3 = new Interest
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Name = "ASP.NET Core"
+            };
+            #endregion
+            modelBuilder
+                .Entity<Interest>()
+                .HasData(_interest1, _interest2, _interest3);
+
+            #region [ Author-Interest Mapping ]
+
+            var _mapping1 = new AuthorInterestMapping
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                AuthorKey = _author.Key,
+                InterestKey = _interest1.Key
+            };
+            var _mapping2 = new AuthorInterestMapping
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                AuthorKey = _author.Key,
+                InterestKey = _interest2.Key
+            };
+            var _mapping3 = new AuthorInterestMapping
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                AuthorKey = _author.Key,
+                InterestKey = _interest3.Key
+            };
+            #endregion
+            modelBuilder
+                .Entity<AuthorInterestMapping>()
+                .HasData(_mapping1, _mapping2, _mapping3);
+
+            #region [ Success ]
+
+            var _success1 = new Success
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                Name = "Lisans Mezuniyet",
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Date = new DateTime(2016,6,19),
+                Detail = "3.46/4.0 - Bölüm İkinciliği",
+                SuccessType = SuccessTypes.School,
+                AuthorKey = _author.Key
+            };
+            var _success2 = new Success
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                Name = "Lisans Tezi",
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                Date = new DateTime(2016, 5, 19),
+                Detail = "UYGULAMA",
+                SuccessType = SuccessTypes.Code,
+                AuthorKey = _author.Key
+            };
+            #endregion
+            modelBuilder
+                .Entity<Success>()
+                .HasData(_success1, _success2);
+
+            #region [ References ]
+            var _reference1 = new Reference()
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                AuthorKey = _author.Key,
+                FirstName = "Firstname",
+                LastName = "Lastname",
+                GSM = "[ SECRET ]",
+                Position = "SOFTWARE DEVELOPER",
+                AccountUrl = "https://visualgo.net/en",
+                ImageUrl = "https://via.placeholder.com/250"
+            };
+            var _reference2 = new Reference()
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                AuthorKey = _author.Key,
+                FirstName = "Firstname2",
+                LastName = "Lastname2",
+                GSM = "[ SECRET ]",
+                Position = "SOFTWARE DEVELOPER",
+                AccountUrl = "https://visualgo.net/en",
+                ImageUrl = "https://via.placeholder.com/250"
+            };
+            var _reference3 = new Reference()
+            {
+                Key = Guid.NewGuid(),
+                Active = true,
+                CreateDate = DateTime.UtcNow,
+                LastUpdateDate = DateTime.UtcNow,
+                AuthorKey = _author.Key,
+                FirstName = "Firstname3",
+                LastName = "Lastname3",
+                GSM = "[ SECRET ]",
+                Position = "SOFTWARE DEVELOPER",
+                AccountUrl = "https://visualgo.net/en",
+                ImageUrl = "https://via.placeholder.com/250"
+            };
+            #endregion
+            modelBuilder
+                .Entity<Reference>()
+                .HasData(_reference1,_reference2, _reference3);
             #endregion
 
             //modelBuilder.RemovePluralizingTableNameConvention();

@@ -12,6 +12,12 @@ namespace Blog.Model
         public virtual string Job { get; set; }
         public virtual string City { get; set; }
 
+        public virtual ICollection<SocialPlatform> SocialPlatforms { get; set; }
+        public virtual ICollection<Experience> Experiences { get; set; }
+        public virtual ICollection<Education> Educations { get; set; }
+        public virtual ICollection<Success> Successes { get; set; }
+        public virtual ICollection<Reference> References { get; set; }
+        public virtual ICollection<AuthorInterestMapping> Interests { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
     }
 }
